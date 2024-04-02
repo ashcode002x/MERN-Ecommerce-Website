@@ -27,6 +27,46 @@ const AddProduct = () => {
 
     const Add_Product = async () => {
         console.log(productDetails);
+        let responseData;
+        let product = productDetails;
+
+        let formData = new FormData();
+        formData.append("product", image);
+
+        try {
+            const response = await fetch("http://localhost:4000/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            responseData = await response.json();
+
+            if (responseData.success) {
+                product.image = responseData.image_url;
+                console.log(product);
+
+                await fetch("http://localhost:4000/addproduct", {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(product),
+                })
+                    .then((resp) => resp.json())
+                    .then((data) => {
+                        data.success
+                            ? alert("Product Added Successfully")
+                            : alert("Failed");
+                    });
+            }
+        } catch (error) {
+            console.error("Error: ", error);
+        }
     };
 
     return (
