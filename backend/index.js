@@ -7,13 +7,21 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 
+// Load environment variables from .env file
+require("dotenv").config();
+
 app.use(express.json());
 app.use(cors());
 
 // Database connection with MongoDB
-mongoose.connect(
-    "mongodb+srv://devsaurav:Saurav%40620686@cluster0.lxfgxe1.mongodb.net/quickcart"
-);
+mongoose
+    .connect(process.env.ATLAS_URI)
+    .then(() => {
+        console.log("Connect to MongoDB");
+    })
+    .catch((err) => {
+        console.error("Error connecting to MongoDB: ", err);
+    });
 
 // API creation
 app.get("/", (req, res) => {
