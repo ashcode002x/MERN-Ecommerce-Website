@@ -9,7 +9,7 @@ This is a MERN (MongoDB, Express.js, React.js, Node.js) stack e-commerce website
 ![Preview](preview.png)
 
 ## Hosted Version
-This project is hosted at http://localhost:3000
+This project is hosted at https://quickcart-aaiepj0x4-ssk.vercel.app
 
 ## Features
 
