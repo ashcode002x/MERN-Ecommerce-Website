@@ -11,7 +11,13 @@ const cors = require("cors");
 require("dotenv").config();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+    cors({
+        origin: "https://deploy-1whq.vercel.app",
+        methods: ["POST", "GET", "UPLOAD"],
+        credentials: true,
+    })
+);
 
 // Database connection with MongoDB
 mongoose
