@@ -13,7 +13,7 @@ require("dotenv").config();
 app.use(express.json());
 app.use(
     cors({
-        origin: "https://deploy-1whq.vercel.app",
+        origin: [""],
         methods: ["POST", "GET", "UPLOAD"],
         credentials: true,
     })
