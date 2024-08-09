@@ -197,3 +197,29 @@
         transform: scale(0.8);
     }
 }
+
+li{
+    list-style: none;
+    color: black;
+}
+
+.linkStyle {
+    text-decoration: none;
+}
+
+.buttonStyle {
+    background-color: #5ed0c3;;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.5s ease;
+}
+
+.buttonStyle:hover {
+    background-color: #00796b;;
+    border-color: transparent;
+    color: white;
+}

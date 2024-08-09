@@ -1,0 +1,40 @@
+/* src/Components/ProductList/ProductList.css */
+.product-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50px; /* Adjust according to your needs */
+    left: 0;
+    /* width: 100%; */
+    width: -moz-available;
+    max-height: 300px; /* Adjust according to your needs */
+    overflow-y: auto;
+    background-color: rgb(97, 97, 97);
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* padding: 10px; */
+    z-index: 999;
+    overflow-x: hidden;
+    text-decoration: none;
+}
+
+.product-list-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    /* width: 100%; */
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.product-list-item:last-child {
+    border-bottom: none;
+}
+
+.product-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}

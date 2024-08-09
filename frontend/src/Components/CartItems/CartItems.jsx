@@ -4,7 +4,7 @@ import "./CartItems.css";
 import { ShopContext } from "./../../Context/ShopContext";
 
 import remove_icon from "../Assets/cart_cross_icon.png";
-
+import App from "../AppComponent/App";
 const CartItems = () => {
     const { getTotalCartAmount, all_product, cartItems, removeFromCart } =
         useContext(ShopContext);
@@ -71,13 +71,15 @@ const CartItems = () => {
                             <h3>${getTotalCartAmount()}</h3>
                         </div>
                     </div>
-                    <button>PROCEED TO CHECKOUT</button>
+                    {/* <button>PROCEED TO CHECKOUT</button> */}
+                    <App data={{ amount: getTotalCartAmount(), currency: "INR", id: 1 }} />
+
                 </div>
                 <div className='cartItems-promocode'>
                     <p>If you have a promo code, Enter it here</p>
                     <div className='cartItems-promobox'>
-                        <input type='text' placeholder='promo code' />
-                        <button>Submit</button>
+                        {/* <input type='text' placeholder='promo code' /> */}
+                        {/* <button>Submit</button> */}
                     </div>
                 </div>
             </div>

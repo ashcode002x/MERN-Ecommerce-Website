@@ -50,7 +50,8 @@ const ShopContextProvider = (props) => {
                 body: JSON.stringify({ itemId: itemId }),
             })
                 .then((response) => response.json())
-                .then((data) => console.log(data));
+                .then((data) => console.log(data))
+                .catch((error) => console.error("Error:", error));
         }
     };
 
@@ -67,7 +68,8 @@ const ShopContextProvider = (props) => {
                 body: JSON.stringify({ itemId: itemId }),
             })
                 .then((response) => response.json())
-                .then((data) => console.log(data));
+                .then((data) => console.log(data))
+                .catch((error) => console.error("Error:", error));
         }
     };
 

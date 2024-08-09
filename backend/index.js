@@ -1,11 +1,15 @@
-const port = 4000;
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
+// const paymentRoute = require("./routes/payments"); // Ensure this path is correct
+
+const app = express();
+const port = 4000;
+
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 // Load environment variables from .env file
 require("dotenv").config();
@@ -13,17 +17,19 @@ require("dotenv").config();
 app.use(express.json());
 app.use(
     cors({
-        origin: [""],
+        origin: ["http://localhost:3000", "http://localhost:5173","*"], 
         methods: ["POST", "GET", "UPLOAD"],
         credentials: true,
     })
 );
 
+// app.use("/api/payment/", paymentRoute);
+
 // Database connection with MongoDB
 mongoose
     .connect(process.env.ATLAS_URI)
     .then(() => {
-        console.log("Connect to MongoDB");
+        console.log("Connected to MongoDB");
     })
     .catch((err) => {
         console.error("Error connecting to MongoDB: ", err);
@@ -134,12 +140,31 @@ app.post("/removeproduct", async (req, res) => {
 });
 
 // Creating API For getting all Products
-app.get("/allproducts", async (req, res) => {
-    let products = await Product.find({});
-    console.log("All Products Fetched");
-    res.send(products);
-});
 
+app.get('/allproducts', async (req, res) => {
+    try {
+        const searchQuery = req.query.search || '';
+        console.log(searchQuery);
+        let products;
+
+        if (searchQuery) {
+            products = await Product.find({
+                $or: [
+                    { name: { $regex: searchQuery, $options: 'i' } },
+                    { category: { $regex: searchQuery, $options: 'i' } },
+                ]
+            });
+        } else {
+            products = await Product.find({});
+        }
+
+        console.log("Products Fetched");
+        res.send(products);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ error: 'An error occurred while fetching products.' });
+    }
+});
 // Schema creating for user model
 const Users = mongoose.model("Users", {
     name: {
@@ -269,27 +294,27 @@ app.post("/addtocart", fetchUser, async (req, res) => {
 app.post("/removefromcart", fetchUser, async (req, res) => {
     console.log("Removed ", req.body.itemId);
     let userData = await Users.findOne({ _id: req.user.id });
-    if (userData.cartData[req.body.itemId] > 0)
-        userData.cartData[req.body.itemId] -= 1;
+    userData.cartData[req.body.itemId] -= 1;
     await Users.findOneAndUpdate(
         { _id: req.user.id },
         { cartData: userData.cartData }
     );
-
     res.send("Removed");
 });
 
-// Creating endpoint to get cart data
-app.post("/getcart", fetchUser, async (req, res) => {
-    console.log("GetCart");
-    let userData = await Users.findOne({ _id: req.user.id });
-    res.json(userData.cartData);
+// Creating endpoint for fetching cart data of a user
+app.get("/cartdata", fetchUser, async (req, res) => {
+    let user = await Users.findOne({ _id: req.user.id });
+    res.send(user.cartData);
 });
 
-app.listen(port, (error) => {
-    if (!error) {
-        console.log("server running on port " + port);
-    } else {
-        console.log("Error : " + error);
-    }
+// Creating endpoint for fetching user data
+app.get("/userdata", fetchUser, async (req, res) => {
+    let user = await Users.findOne({ _id: req.user.id });
+    res.send(user);
+});
+
+// Listening on the specified port
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });

@@ -33,10 +33,12 @@ function LoginSignup() {
         } else {
             alert(responseData.errors);
         }
+        console.log(responseData);
     };
 
     const signUp = async () => {
         console.log("Sign Up Function Executed", formData);
+        console.log(JSON.stringify(formData));
         let responseData;
         await fetch("http://localhost:4000/signup", {
             method: "POST",
